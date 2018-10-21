@@ -3,6 +3,7 @@ import Person from "./Person";
 import Tooltip from 'rc-tooltip';
 import Slider from 'rc-slider';
 import 'rc-slider/assets/index.css';
+const request = require('request');
 
 const Handle = Slider.Handle;
 
@@ -25,42 +26,42 @@ class Popup extends Component {
 
     static Users = [
         {
-            name: "Test 1",
+            name: "Naomi Sorrell",
             amountRaised: 300,
             amountRequired: 400,
             tags: ["Health", "Emergency"],
             image: require("./person1.png")
         },
         {
-            name: "Test 1",
+            name: "Naomi Sorrell",
             amountRaised: 5,
             amountRequired: 100,
             tags: ["Health", "Emergency"],
             image: require("./person2.jpg")
         },
         {
-            name: "Test 1",
+            name: "Naomi Sorrell",
             amountRaised: 30,
             amountRequired: 600,
             tags: ["Health", "Emergency"],
             image: require("./person3.jpg")
         },
         {
-            name: "Test 1",
+            name: "Naomi Sorrell",
             amountRaised: 900,
             amountRequired: 1000,
             tags: ["Health", "Emergency"],
             image: require("./person4.jpg")
         },
         {
-            name: "Test 1",
+            name: "Naomi Sorrell",
             amountRaised: 0,
             amountRequired: 100,
             tags: ["Health", "Emergency"],
             image: require("./person5.jpg")
         },
         {
-            name: "Test 1",
+            name: "Naomi Sorrell",
             amountRaised: 25,
             amountRequired: 100,
             tags: ["Health", "Emergency"],
@@ -95,27 +96,66 @@ class Popup extends Component {
         });
     }
 
-    paymentTime(user) {
-        this.setState({
+    async paymentTime(user) {
+        await this.setState({
             user,
             paymentTime: true,
         })
     }
 
-    paymentCompleted() {
-        debugger;
-        this.setState({
+    payPalPayment() {
+        const postData = {
+            "amount": {
+                "value": this.state.paymentAmount.toString(),
+                "currency": "USD"
+            },
+            "payee": {
+                "id": "payee@example.com",
+                "name": this.state.user.name,
+                "type": "EMAIL"
+            },
+            "payment_type": "PERSONAL"
+        };
+
+        const options = {
+            method: 'post',
+            body: postData,
+            json: true,
+            url: 'https://api.sandbox.paypal.com/v1/payments/personal-payment-tokens',
+            headers: {
+                Authorization: ' Bearer A21AAGmpjhFmwr06yeIKKilCBfpCPwimvrLxvtS0NwLb4hnnhHA8C32ID7Edv7iwuFt0cQvprLsLPWTj8CUkrXxrGuYOtpMbA'
+            }
+        }
+
+
+
+        request(options, function (err, res, body) {
+            if (err) {
+                console.error('error posting json: ', err)
+                throw err
+            }
+            var headers = res.headers
+            var statusCode = res.statusCode
+            console.log('headers: ', headers)
+            console.log('statusCode: ', statusCode)
+            console.log('body: ', body)
+            window.location.href = body.links[0].href;
+        })
+    }
+
+    async paymentCompleted() {
+        await this.setState({
             paymentTime: false,
             completed: true,
-            stepHeader: `You've sent $ ${this.state.paymentAmount} to ${this.state.user.name}`
         })
+
+        this.payPalPayment();
     }
 
     calculateReturn() {
         if (this.state.paymentAmount <= 0 || isNaN(this.state.multiplier) || isNaN(this.state.paymentAmount)) {
             return 0;
         }
-        debugger;
         const amount = this.state.paymentAmount * (1 / this.state.multiplier);
         const final = parseInt(this.state.paymentAmount) + amount;
         return parseInt(final.toFixed(2));
@@ -208,20 +248,7 @@ class Popup extends Component {
         }
         if (this.state.completed){
             return (
-                <div>
-                    <div className="pageWrapper_1xny8id">
-                        <div className="headerBox_1gemwhc">
-                            <div className="checkmarkProportions_fq05jh false false">
-                                <div className="checkmarkAlignment_8d38xi false false">
-                                    <div id="success-checkmark-animated" data-nemo="success-checkmark" className=""
-                                         data-animation-path="animation/">
-                                        <img height="1492" style={{"width": "100%", "height": "100%"}} src={require("./check.png")}></img>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                null
             );
         }
         if (this.state.step == 1) {
@@ -366,7 +393,7 @@ class Popup extends Component {
                                         <Slider min={1} max={20} defaultValue={3} handle={handle} onChange={this.setMultiplier.bind(this)} />
                                     </div>
                                     <div>
-                                        Estimated Return: { this.calculateReturn() }
+                                        <h3>Estimated Return: ${ this.calculateReturn() }</h3>
                                     </div>
                                 </div>
                                 <div className="firstTimeUserHelpInfo_1l3aoin">
