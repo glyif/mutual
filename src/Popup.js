@@ -104,6 +104,7 @@ class Popup extends Component {
     }
 
     payPalPayment() {
+        const name = this.state.user ? this.state.user.name : "Mutual Fund";
         const postData = {
             "amount": {
                 "value": this.state.paymentAmount.toString(),
@@ -111,7 +112,7 @@ class Popup extends Component {
             },
             "payee": {
                 "id": "payee@example.com",
-                "name": this.state.user.name,
+                "name": name,
                 "type": "EMAIL"
             },
             "payment_type": "PERSONAL"
@@ -147,6 +148,7 @@ class Popup extends Component {
         await this.setState({
             paymentTime: false,
             completed: true,
+            stepHeader: "Redirecting....."
         })
 
         this.payPalPayment();
