@@ -12,7 +12,10 @@ class Person extends Component {
                     return <p className="vx_text-legal transfer-list-text">{tag}</p>
                 })}
 
-            </span><span
+                <div>Risk: {this.props.user.risk}</div>
+
+            </span>
+                <span
                 className="col-xs-1"><svg xmlns="http://www.w3.org/2000/svg"
                                           width="24px" height="88px" fill="#20BFD6"
                                           viewBox="-10 0 24 10"><g fill="none"

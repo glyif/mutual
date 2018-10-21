@@ -26,46 +26,52 @@ class Popup extends Component {
 
     static Users = [
         {
-            name: "Naomi Sorrell",
+            name: "Ira Mcdonald",
             amountRaised: 300,
             amountRequired: 400,
-            tags: ["Health", "Emergency"],
-            image: require("./person1.png")
+            tags: ["Health", "Personal"],
+            image: require("./person1.png"),
+            risk: "High"
         },
         {
-            name: "Naomi Sorrell",
+            name: "Isla Valdez",
             amountRaised: 5,
             amountRequired: 100,
-            tags: ["Health", "Emergency"],
-            image: require("./person2.jpg")
+            tags: ["Business"],
+            image: require("./person2.jpg"),
+            risk: "Low"
         },
         {
-            name: "Naomi Sorrell",
+            name: "Lukasz Cole",
             amountRaised: 30,
             amountRequired: 600,
-            tags: ["Health", "Emergency"],
-            image: require("./person3.jpg")
+            tags: ["Emergency"],
+            image: require("./person3.jpg"),
+            risk: "Low"
         },
         {
-            name: "Naomi Sorrell",
+            name: "Kimberley Roach",
             amountRaised: 900,
             amountRequired: 1000,
-            tags: ["Health", "Emergency"],
-            image: require("./person4.jpg")
+            tags: ["Business", "Emergency"],
+            image: require("./person4.jpg"),
+            risk: "Low"
         },
         {
-            name: "Naomi Sorrell",
+            name: "Riley-Jay Lester",
             amountRaised: 0,
             amountRequired: 100,
             tags: ["Health", "Emergency"],
-            image: require("./person5.jpg")
+            image: require("./person5.jpg"),
+            risk: "High"
         },
         {
-            name: "Naomi Sorrell",
+            name: "Malia Acosta",
             amountRaised: 25,
             amountRequired: 100,
             tags: ["Health", "Emergency"],
-            image: require("./person6.jpg")
+            image: require("./person6.jpg"),
+            risk: "Medium"
         }
     ]
 
@@ -395,7 +401,7 @@ class Popup extends Component {
                                         <Slider min={1} max={20} defaultValue={3} handle={handle} onChange={this.setMultiplier.bind(this)} />
                                     </div>
                                     <div>
-                                        <h3>Estimated Return: ${ this.calculateReturn() }</h3>
+                                        <h3>Possible Return: ${ this.calculateReturn() }</h3>
                                     </div>
                                 </div>
                                 <div className="firstTimeUserHelpInfo_1l3aoin">
